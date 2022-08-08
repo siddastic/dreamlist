@@ -1,4 +1,6 @@
 import 'package:dreamlist/widgets/input.dart';
+import 'package:dreamlist/widgets/primary_button.dart';
+import 'package:dreamlist/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -56,6 +58,23 @@ class AddTodoScreen extends StatelessWidget {
           ),
           Input(
             placeholder: "Thing",
+          ),
+          VSpace(),
+          Input(
+            placeholder: "Place",
+          ),
+          VSpace(),
+          Input(
+            placeholder: "Time",
+          ),
+          VSpace(),
+          Input(
+            placeholder: "Notification",
+          ),
+          VSpace(h: 25),
+          PrimaryButton(
+            label: "ADD YOUR THING",
+            onPressed: () {},
           ),
         ],
       ),

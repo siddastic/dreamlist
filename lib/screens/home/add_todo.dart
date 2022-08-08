@@ -4,8 +4,18 @@ import 'package:dreamlist/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
-class AddTodoScreen extends StatelessWidget {
+class AddTodoScreen extends StatefulWidget {
   const AddTodoScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AddTodoScreen> createState() => _AddTodoScreenState();
+}
+
+class _AddTodoScreenState extends State<AddTodoScreen> {
+  final TextEditingController _thingController = TextEditingController();
+  final TextEditingController _placeController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _notificationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +44,7 @@ class AddTodoScreen extends StatelessWidget {
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
           SizedBox(
             height: 100,
@@ -58,20 +68,24 @@ class AddTodoScreen extends StatelessWidget {
           ),
           Input(
             placeholder: "Thing",
+            controller: _thingController,
           ),
-          VSpace(),
+          const VSpace(),
           Input(
             placeholder: "Place",
+            controller: _placeController,
           ),
-          VSpace(),
+          const VSpace(),
           Input(
             placeholder: "Time",
+            controller: _timeController,
           ),
-          VSpace(),
+          const VSpace(),
           Input(
             placeholder: "Notification",
+            controller: _notificationController,
           ),
-          VSpace(h: 25),
+          const VSpace(h: 25),
           PrimaryButton(
             label: "ADD YOUR THING",
             onPressed: () {},

@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
         closedBuilder: (ctx, openAction) {
           return FloatingActionButton(
             onPressed: openAction,
-            child: Icon(Ionicons.add, size: 30),
+            child: Icon(Ionicons.add_outline, size: 30),
           );
         },
         openBuilder: (ctx, closeActions) {

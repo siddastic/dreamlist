@@ -6,7 +6,10 @@ class AddTodoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       appBar: AppBar(
+        foregroundColor: Theme.of(context).primaryColor,
+        leading: Icon(Icons.arrow_back_sharp,),
       ),
     );
   }

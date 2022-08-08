@@ -1,5 +1,6 @@
 import 'package:dreamlist/providers/todo_provider.dart';
-import 'package:dreamlist/screens/home/add_todo.dart';
+import 'package:dreamlist/screens/auth/launch_decider.dart';
+import 'package:dreamlist/screens/auth/login.dart';
 import 'package:dreamlist/screens/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: HomeScreen.routeName,
       routes: {
+        LaunchDecider.routeName: (ctx) => const LaunchDecider(),
+        LoginScreen.routeName: (ctx) => const LoginScreen(),
         HomeScreen.routeName: (context) => const HomeScreen(),
       },
     );

@@ -1,3 +1,4 @@
+import 'package:dreamlist/api/master_validator.dart';
 import 'package:dreamlist/widgets/input.dart';
 import 'package:dreamlist/widgets/primary_button.dart';
 import 'package:dreamlist/widgets/v_space.dart';
@@ -12,6 +13,7 @@ class AddTodoScreen extends StatefulWidget {
 }
 
 class _AddTodoScreenState extends State<AddTodoScreen> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _thingController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
@@ -66,29 +68,56 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
               ),
             ),
           ),
-          Input(
-            placeholder: "Thing",
-            controller: _thingController,
-          ),
-          const VSpace(),
-          Input(
-            placeholder: "Place",
-            controller: _placeController,
-          ),
-          const VSpace(),
-          Input(
-            placeholder: "Time",
-            controller: _timeController,
-          ),
-          const VSpace(),
-          Input(
-            placeholder: "Notification",
-            controller: _notificationController,
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Input(
+                  placeholder: "Thing",
+                  controller: _thingController,
+                  validator: MasterValidator.attach(
+                    msgPrefix: "Title",
+                    flags: [
+                      ValidatorFlags.NonEmpty,
+                    ],
+                  ),
+                ),
+                const VSpace(),
+                Input(
+                  placeholder: "Place",
+                  controller: _placeController,
+                  validator: MasterValidator.attach(
+                    msgPrefix: "Place",
+                    flags: [
+                      ValidatorFlags.NonEmpty,
+                    ],
+                  ),
+                ),
+                const VSpace(),
+                Input(
+                  placeholder: "Time",
+                  controller: _timeController,
+                  validator: MasterValidator.attach(
+                    msgPrefix: "Time",
+                    flags: [
+                      ValidatorFlags.NonEmpty,
+                    ],
+                  ),
+                ),
+                const VSpace(),
+                Input(
+                  placeholder: "Notification",
+                  controller: _notificationController,
+                ),
+              ],
+            ),
           ),
           const VSpace(h: 25),
           PrimaryButton(
             label: "ADD YOUR THING",
-            onPressed: () {},
+            onPressed: () {
+              if (_formKey.currentState?.validate() ?? false) {}
+            },
           ),
         ],
       ),

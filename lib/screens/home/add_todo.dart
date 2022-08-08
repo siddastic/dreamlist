@@ -1,10 +1,12 @@
 import 'package:dreamlist/api/master_validator.dart';
 import 'package:dreamlist/models/todo.dart';
+import 'package:dreamlist/providers/todo_provider.dart';
 import 'package:dreamlist/widgets/input.dart';
 import 'package:dreamlist/widgets/primary_button.dart';
 import 'package:dreamlist/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:provider/provider.dart';
 
 class AddTodoScreen extends StatefulWidget {
   const AddTodoScreen({Key? key}) : super(key: key);
@@ -33,6 +35,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TodoProvider todoProvider = Provider.of<TodoProvider>(context,listen: false);
     return Scaffold(
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       appBar: AppBar(
@@ -128,7 +131,10 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           PrimaryButton(
             label: "ADD YOUR THING",
             onPressed: () {
-              if (_formKey.currentState?.validate() ?? false) {}
+              if (_formKey.currentState?.validate() ?? false) {
+                todoProvider.addTodo(constructTodo());
+                Navigator.of(context).pop();
+              }
             },
           ),
         ],

@@ -1,8 +1,10 @@
 import 'package:dreamlist/api/master_validator.dart';
+import 'package:dreamlist/constants/db.dart';
 import 'package:dreamlist/models/todo.dart';
 import 'package:dreamlist/providers/todo_provider.dart';
 import 'package:dreamlist/widgets/input.dart';
 import 'package:dreamlist/widgets/primary_button.dart';
+import 'package:dreamlist/widgets/touchable_opacity.dart';
 import 'package:dreamlist/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -21,21 +23,39 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _notificationController = TextEditingController();
+  DateTime? selectedEndTime;
 
-  Todo constructTodo(){
+  void selectEndTime() async {
+    selectedEndTime = await showDatePicker(
+      context: context,
+      initialDate: selectedEndTime ?? DateTime.now(),
+      firstDate: DateTime(1995),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+      currentDate: DateTime.now(),
+      initialDatePickerMode: DatePickerMode.day,
+    );
+    if (selectedEndTime == null) return;
+    setState(() {
+      _timeController.text =
+          "${selectedEndTime!.day} - ${selectedEndTime!.month} - ${selectedEndTime!.year}";
+    });
+  }
+
+  Todo constructTodo() {
     return Todo(
-      id: "",
+      id: DBRefs.todosCollection.doc().id,
       title: _thingController.text,
       place: _placeController.text,
       createdAt: DateTime.now(),
-      endDate: DateTime.parse(_timeController.text),
+      endDate: selectedEndTime!,
       notification: _notificationController.text,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    TodoProvider todoProvider = Provider.of<TodoProvider>(context,listen: false);
+    TodoProvider todoProvider =
+        Provider.of<TodoProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       appBar: AppBar(
@@ -89,6 +109,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
               children: [
                 Input(
                   placeholder: "Thing",
+                  nextInputAvailable: true,
                   controller: _thingController,
                   validator: MasterValidator.attach(
                     msgPrefix: "Title",
@@ -109,14 +130,21 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   ),
                 ),
                 const VSpace(),
-                Input(
-                  placeholder: "Time",
-                  controller: _timeController,
-                  validator: MasterValidator.attach(
-                    msgPrefix: "Time",
-                    flags: [
-                      ValidatorFlags.NonEmpty,
-                    ],
+                TouchableOpacity(
+                  onTap: selectEndTime,
+                  child: IgnorePointer(
+                    ignoring: true,
+                    child: Input(
+                      readonly: true,
+                      placeholder: "Time",
+                      controller: _timeController,
+                      validator: MasterValidator.attach(
+                        msgPrefix: "Time",
+                        flags: [
+                          ValidatorFlags.NonEmpty,
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 const VSpace(),

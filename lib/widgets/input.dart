@@ -6,13 +6,28 @@ class Input extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final String? placeholder;
-  const Input({Key? key, this.controller, this.validator, this.placeholder}) : super(key: key);
+  final bool readonly;
+  final bool nextInputAvailable;
+  const Input({
+    Key? key,
+    this.controller,
+    this.validator,
+    this.placeholder,
+    this.readonly = false,
+    this.nextInputAvailable = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       validator: validator,
       controller: controller,
+      readOnly: readonly,
+      textInputAction:
+          nextInputAvailable ? TextInputAction.next : TextInputAction.done,
+      style: const TextStyle(
+        color: Colors.white,
+      ),
       decoration: InputDecoration(
         hintText: placeholder,
         hintStyle: TextStyle(

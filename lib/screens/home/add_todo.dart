@@ -1,4 +1,5 @@
 import 'package:dreamlist/api/master_validator.dart';
+import 'package:dreamlist/models/todo.dart';
 import 'package:dreamlist/widgets/input.dart';
 import 'package:dreamlist/widgets/primary_button.dart';
 import 'package:dreamlist/widgets/v_space.dart';
@@ -18,6 +19,17 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _notificationController = TextEditingController();
+
+  Todo constructTodo(){
+    return Todo(
+      id: "",
+      title: _thingController.text,
+      place: _placeController.text,
+      createdAt: DateTime.now(),
+      endDate: DateTime.parse(_timeController.text),
+      notification: _notificationController.text,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

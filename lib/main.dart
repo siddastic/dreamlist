@@ -1,3 +1,4 @@
+import 'package:dreamlist/screens/home/add_todo.dart';
 import 'package:dreamlist/screens/home/home.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +16,12 @@ class MyApp extends StatelessWidget {
       title: 'Dreamlist',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        primaryColor: Color(0xff89cbf0),
+        primaryColor: const Color(0xff89cbf0),
         scaffoldBackgroundColor: const Color(0xfffefefe),
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xff46549e),
+          elevation: 0,
+          centerTitle: true,
         ),
       ),
       initialRoute: HomeScreen.routeName,

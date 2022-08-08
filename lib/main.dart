@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           centerTitle: true,
         ),
       ),
-      initialRoute: HomeScreen.routeName,
+      initialRoute: LaunchDecider.routeName,
       routes: {
         LaunchDecider.routeName: (ctx) => const LaunchDecider(),
         LoginScreen.routeName: (ctx) => const LoginScreen(),

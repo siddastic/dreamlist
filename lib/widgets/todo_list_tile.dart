@@ -76,6 +76,14 @@ class _TodoListTileState extends State<TodoListTile> {
               onTap: () {
                 Provider.of<TodoProvider>(context, listen: false)
                     .removeTodo(widget.todo);
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                    behavior: SnackBarBehavior.floating,
+                    content: Text("Task Removed"),
+                  ),
+                );
                 popUntilHome();
               },
               leading: const Icon(

@@ -15,7 +15,8 @@ import 'package:provider/provider.dart';
 class AddTodoScreen extends StatefulWidget {
   final Todo? editModeTodo;
   final Function()? onEditSave;
-  const AddTodoScreen({Key? key, this.editModeTodo, this.onEditSave}) : super(key: key);
+  const AddTodoScreen({Key? key, this.editModeTodo, this.onEditSave})
+      : super(key: key);
 
   @override
   State<AddTodoScreen> createState() => _AddTodoScreenState();
@@ -79,7 +80,15 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  content: Text("Not implemented"),
+                ),
+              );
+            },
             icon: const Icon(Ionicons.options_outline),
           )
         ],

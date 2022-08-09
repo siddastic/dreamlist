@@ -23,7 +23,7 @@ class _HomePageHeaderState extends State<HomePageHeader> {
     final view = MediaQuery.of(context).size;
     var completedPercent =
         todoProvider.todos.where((element) => element.isDone).length /
-            todoProvider.todos.length;
+            (todoProvider.todos.isNotEmpty ? todoProvider.todos.length : 1);
     var today = DateTime.now();
     return SizedBox(
       height: 270,
@@ -93,16 +93,6 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                             ),
                           ),
                         ),
-                        const VSpace(h: 30),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            "${Months.short[today.month - 1]} ${today.day}, ${today.year}",
-                            style: GoogleFonts.roboto(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -138,6 +128,16 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+          Positioned(
+            left: 20,
+            bottom: 17,
+            child: Text(
+              "${Months.short[today.month - 1]} ${today.day}, ${today.year}",
+              style: GoogleFonts.roboto(
+                color: Colors.grey,
               ),
             ),
           ),

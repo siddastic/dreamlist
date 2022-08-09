@@ -69,14 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ListTile(
                     leading: firebaseUser.photoURL != null
                         ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
                                 backgroundImage:
                                     NetworkImage(firebaseUser.photoURL!),
                               ),
-                          ],
-                        )
+                            ],
+                          )
                         : null,
                     title: Text(
                       firebaseUser.displayName ?? '',
@@ -127,6 +127,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     TodoProvider todoProvider = Provider.of<TodoProvider>(context);
+    if (!todoProvider.isTodosLoaded) {
+      return Scaffold(
+        body: Center(
+          child: Transform.scale(
+            scale: .5,
+            child: const CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,

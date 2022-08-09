@@ -47,7 +47,7 @@ class TodoProvider with ChangeNotifier {
   }
 
   void removeTodo(Todo todo) {
-    _todos.remove(todo);
+    _todos.removeWhere((element) => element.id == todo.id);
     DBRefs.todosCollection.doc(todo.id).delete();
     notifyListeners();
   }

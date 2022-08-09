@@ -45,6 +45,17 @@ class _TodoListTileState extends State<TodoListTile> {
               ),
             ),
             const VSpace(h: 25),
+            if (widget.todo.description != null) ...[
+              Text(
+                widget.todo.description!,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: ConstantColors.grey,
+                ),
+              ),
+              const VSpace(),
+              Divider(color: ConstantColors.grey),
+            ],
             ListTile(
               onTap: () {
                 Navigator.of(context).pop();

@@ -2,6 +2,7 @@ import 'package:dreamlist/api/master_validator.dart';
 import 'package:dreamlist/constants/db.dart';
 import 'package:dreamlist/models/todo.dart';
 import 'package:dreamlist/providers/todo_provider.dart';
+import 'package:dreamlist/widgets/fade_animation.dart';
 import 'package:dreamlist/widgets/input.dart';
 import 'package:dreamlist/widgets/primary_button.dart';
 import 'package:dreamlist/widgets/touchable_opacity.dart';
@@ -109,63 +110,78 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
             key: _formKey,
             child: Column(
               children: [
-                Input(
-                  placeholder: "Thing",
-                  nextInputAvailable: true,
-                  controller: _thingController,
-                  validator: MasterValidator.attach(
-                    msgPrefix: "Title",
-                    flags: [
-                      ValidatorFlags.NonEmpty,
-                    ],
+                FadeAnimation(
+                  delay: 1,
+                  child: Input(
+                    placeholder: "Thing",
+                    nextInputAvailable: true,
+                    controller: _thingController,
+                    validator: MasterValidator.attach(
+                      msgPrefix: "Title",
+                      flags: [
+                        ValidatorFlags.NonEmpty,
+                      ],
+                    ),
                   ),
                 ),
                 const VSpace(),
-                Input(
-                  placeholder: "Place",
-                  controller: _placeController,
-                  validator: MasterValidator.attach(
-                    msgPrefix: "Place",
-                    flags: [
-                      ValidatorFlags.NonEmpty,
-                    ],
+                FadeAnimation(
+                  delay: 2,
+                  child: Input(
+                    placeholder: "Place",
+                    controller: _placeController,
+                    validator: MasterValidator.attach(
+                      msgPrefix: "Place",
+                      flags: [
+                        ValidatorFlags.NonEmpty,
+                      ],
+                    ),
                   ),
                 ),
                 const VSpace(),
-                TouchableOpacity(
-                  onTap: selectEndTime,
-                  child: IgnorePointer(
-                    ignoring: true,
-                    child: Input(
-                      readonly: true,
-                      placeholder: "End date",
-                      controller: _timeController,
-                      validator: MasterValidator.attach(
-                        msgPrefix: "Time",
-                        flags: [
-                          ValidatorFlags.NonEmpty,
-                        ],
+                FadeAnimation(
+                  delay: 3,
+                  child: TouchableOpacity(
+                    onTap: selectEndTime,
+                    child: IgnorePointer(
+                      ignoring: true,
+                      child: Input(
+                        readonly: true,
+                        placeholder: "End date",
+                        controller: _timeController,
+                        validator: MasterValidator.attach(
+                          msgPrefix: "Time",
+                          flags: [
+                            ValidatorFlags.NonEmpty,
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
                 const VSpace(),
-                Input(
-                  placeholder: "Description (optional)",
-                  controller: _notificationController,
+                FadeAnimation(
+                  delay: 4,
+                  child: Input(
+                    placeholder: "Description (optional)",
+                    controller: _notificationController,
+                  ),
                 ),
               ],
             ),
           ),
           const VSpace(h: 25),
-          PrimaryButton(
-            label: "ADD YOUR THING",
-            onPressed: () {
-              if (_formKey.currentState?.validate() ?? false) {
-                todoProvider.addTodo(constructTodo());
-                Navigator.of(context).pop();
-              }
-            },
+          FadeAnimation(
+            delay: 4,
+            child: PrimaryButton(
+              label: "ADD YOUR THING",
+              onPressed: () {
+                if (_formKey.currentState?.validate() ?? false) {
+                  todoProvider.addTodo(constructTodo());
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
           ),
         ],
       ),

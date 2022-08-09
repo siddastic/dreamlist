@@ -1,3 +1,4 @@
+import 'package:dreamlist/api/global_helpers.dart';
 import 'package:dreamlist/api/master_validator.dart';
 import 'package:dreamlist/constants/db.dart';
 import 'package:dreamlist/models/todo.dart';
@@ -177,6 +178,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
               label: "ADD YOUR THING",
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
+                  GlobalHelpers.hideKeyboard();
                   todoProvider.addTodo(constructTodo());
                   Navigator.of(context).pop();
                 }

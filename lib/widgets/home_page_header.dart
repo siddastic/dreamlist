@@ -9,7 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HomePageHeader extends StatefulWidget {
-  const HomePageHeader({Key? key}) : super(key: key);
+  final void Function()? onMenuClick;
+  const HomePageHeader({Key? key, this.onMenuClick}) : super(key: key);
 
   @override
   State<HomePageHeader> createState() => _HomePageHeaderState();
@@ -20,7 +21,9 @@ class _HomePageHeaderState extends State<HomePageHeader> {
   Widget build(BuildContext context) {
     TodoProvider todoProvider = Provider.of<TodoProvider>(context);
     final view = MediaQuery.of(context).size;
-    var completedPercent = todoProvider.todos.where((element) => element.isDone).length / todoProvider.todos.length;
+    var completedPercent =
+        todoProvider.todos.where((element) => element.isDone).length /
+            todoProvider.todos.length;
     var today = DateTime.now();
     return SizedBox(
       height: 270,
@@ -51,6 +54,7 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                           ),
                         ),
                         TouchableOpacity(
+                          onTap: widget.onMenuClick,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 16, top: 10),
                             child: Column(
@@ -142,7 +146,9 @@ class _HomePageHeaderState extends State<HomePageHeader> {
             child: AnimatedContainer(
               width: view.width * completedPercent,
               height: 4,
-              color: completedPercent == 1 ? Colors.green.shade300 : Theme.of(context).primaryColor,
+              color: completedPercent == 1
+                  ? Colors.green.shade300
+                  : Theme.of(context).primaryColor,
               duration: Duration(milliseconds: 150),
             ),
           ),

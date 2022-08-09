@@ -1,10 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:dreamlist/constants/colors.dart';
 import 'package:dreamlist/providers/todo_provider.dart';
+import 'package:dreamlist/screens/auth/login.dart';
 import 'package:dreamlist/screens/home/add_todo.dart';
 import 'package:dreamlist/widgets/home_page_header.dart';
 import 'package:dreamlist/widgets/todo_list_tile.dart';
 import 'package:dreamlist/widgets/v_space.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ionicons/ionicons.dart';
@@ -40,6 +42,88 @@ class _HomeScreenState extends State<HomeScreen> {
     return await LottieComposition.fromByteData(assetData);
   }
 
+  void showMenu() {
+    var firebaseUser = FirebaseAuth.instance.currentUser!;
+    showDialog(
+        useSafeArea: false,
+        context: context,
+        builder: (context) {
+          return Material(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Theme.of(context).appBarTheme.backgroundColor,
+              child: Column(
+                children: [
+                  AppBar(
+                    leading: IconButton(
+                      onPressed: Navigator.of(context).pop,
+                      icon: Icon(
+                        Icons.close_rounded,
+                        color: Theme.of(context).primaryColor,
+                        size: 40,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  ListTile(
+                    leading: firebaseUser.photoURL != null
+                        ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(firebaseUser.photoURL!),
+                              ),
+                          ],
+                        )
+                        : null,
+                    title: Text(
+                      firebaseUser.displayName ?? '',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    subtitle: const Text(
+                      "Logged in as",
+                      style: TextStyle(
+                        color: ConstantColors.grey,
+                      ),
+                    ),
+                  ),
+                  const Spacer(flex: 2),
+                  const Divider(
+                    color: ConstantColors.grey,
+                    indent: 16,
+                    endIndent: 16,
+                  ),
+                  ListTile(
+                    leading: const Icon(
+                      Ionicons.power,
+                      color: Colors.red,
+                    ),
+                    title: const Text(
+                      "Logout",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: () {
+                      FirebaseAuth.instance.signOut();
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          LoginScreen.routeName, (route) => false);
+                    },
+                  ),
+                  const VSpace(h: 20),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     TodoProvider todoProvider = Provider.of<TodoProvider>(context);
@@ -47,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const HomePageHeader(),
+          HomePageHeader(onMenuClick: showMenu),
           const VSpace(),
           const ListTile(
             title: Text(

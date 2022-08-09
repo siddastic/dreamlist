@@ -6,7 +6,9 @@ import 'package:dreamlist/widgets/home_page_header.dart';
 import 'package:dreamlist/widgets/todo_list_tile.dart';
 import 'package:dreamlist/widgets/v_space.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,8 +22,22 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    Provider.of<TodoProvider>(context, listen: false).loadTodos();
+    var todoProvider = Provider.of<TodoProvider>(context, listen: false);
+    todoProvider.loadTodos();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _loadComposition().then((value) {
+        setState(() {
+          todoProvider.attachHomeScreenVariables(context, value);
+        });
+      });
+    });
     super.initState();
+  }
+
+  Future<LottieComposition> _loadComposition() async {
+    var assetData =
+        await rootBundle.load('assets/anim/confetti-animation.json');
+    return await LottieComposition.fromByteData(assetData);
   }
 
   @override
@@ -58,7 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 if (todoProvider.todos
-                        .where((element) => element.isDone).isNotEmpty) ...[
+                    .where((element) => element.isDone)
+                    .isNotEmpty) ...[
                   const SizedBox(width: 5),
                   Container(
                     height: 25,

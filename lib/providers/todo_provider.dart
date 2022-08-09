@@ -1,11 +1,15 @@
 import 'package:dreamlist/constants/db.dart';
 import 'package:dreamlist/models/todo.dart';
-import 'package:flutter/material.dart' show ChangeNotifier;
+import 'package:dreamlist/screens/home/home.dart';
+import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class TodoProvider with ChangeNotifier {
   final List<Todo> _todos = [];
   List<Todo> get todos => _todos;
   bool _isTodosLoaded = false;
+  BuildContext? _homeScreenContext;
+  LottieComposition? _composition;
 
   bool get isTodosLoaded => _isTodosLoaded;
 
@@ -29,6 +33,10 @@ class TodoProvider with ChangeNotifier {
     DBRefs.todosCollection.doc(todo.id).update({
       'isDone': todo.isDone,
     });
+    // if all tasks are completed
+    if (_todos.every((element) => element.isDone)) {
+      showConfettiAnimation();
+    }
     notifyListeners();
   }
 
@@ -42,5 +50,31 @@ class TodoProvider with ChangeNotifier {
     _todos.remove(todo);
     DBRefs.todosCollection.doc(todo.id).delete();
     notifyListeners();
+  }
+
+  void attachHomeScreenVariables(
+      BuildContext context, LottieComposition? composition) {
+    _homeScreenContext = context;
+    _composition = composition;
+  }
+
+  void showConfettiAnimation() {
+    if (_homeScreenContext != null) {
+      showDialog(
+        barrierColor: Colors.transparent,
+        context: _homeScreenContext!,
+        builder: (context) {
+          return Lottie(
+            composition: _composition,
+            repeat: false,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+          );
+        },
+      );
+      Future.delayed(Duration(seconds: 2), () {
+        Navigator.of(_homeScreenContext!).popUntil(ModalRoute.withName(HomeScreen.routeName));
+      });
+    }
   }
 }

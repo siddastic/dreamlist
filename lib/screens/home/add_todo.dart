@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 class AddTodoScreen extends StatefulWidget {
   final Todo? editModeTodo;
-  final Function()? onEditSave;
+  final Function(Todo newTodo)? onEditSave;
   const AddTodoScreen({Key? key, this.editModeTodo, this.onEditSave})
       : super(key: key);
 
@@ -29,6 +29,12 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _notificationController = TextEditingController();
   DateTime? selectedEndTime;
+
+  @override
+  void initState() {
+    setupInputValues();
+    super.initState();
+  }
 
   void selectEndTime() async {
     selectedEndTime = await showDatePicker(
@@ -48,13 +54,23 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
 
   Todo constructTodo() {
     return Todo(
-      id: DBRefs.todosCollection.doc().id,
+      id: widget.editModeTodo?.id ?? DBRefs.todosCollection.doc().id,
       title: _thingController.text,
       place: _placeController.text,
-      createdAt: DateTime.now(),
+      createdAt: widget.editModeTodo?.createdAt ?? DateTime.now(),
       endDate: selectedEndTime!,
       description: _notificationController.text,
     );
+  }
+
+  void setupInputValues(){
+    if(widget.editModeTodo != null){
+      _thingController.text = widget.editModeTodo!.title;
+      _placeController.text = widget.editModeTodo!.place;
+      _timeController.text = "${widget.editModeTodo!.endDate.day} - ${widget.editModeTodo!.endDate.month} - ${widget.editModeTodo!.endDate.year}";
+      selectedEndTime = widget.editModeTodo!.endDate;
+      _notificationController.text = widget.editModeTodo!.description ?? '';
+    }
   }
 
   @override
@@ -71,8 +87,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
-          "Add new thing",
+        title: Text(
+          widget.editModeTodo?.title ?? "Add new thing",
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -188,7 +204,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
                   GlobalHelpers.hideKeyboard();
-                  todoProvider.addTodo(constructTodo());
+                  if (widget.editModeTodo != null) {
+                    widget.onEditSave?.call(constructTodo());
+                  } else {
+                    todoProvider.addTodo(constructTodo());
+                  }
                   Navigator.of(context).pop();
                 }
               },

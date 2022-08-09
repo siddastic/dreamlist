@@ -52,6 +52,13 @@ class TodoProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateTodo(Todo todo) {
+    var index = _todos.indexWhere((element) => element.id == todo.id);
+    _todos[index] = todo;
+    DBRefs.todosCollection.doc(todo.id).update(todo.toJson());
+    notifyListeners();
+  }
+
   void attachHomeScreenVariables(
       BuildContext context, LottieComposition? composition) {
     _homeScreenContext = context;

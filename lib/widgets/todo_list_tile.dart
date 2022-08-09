@@ -1,7 +1,9 @@
 import 'package:dreamlist/api/global_helpers.dart';
 import 'package:dreamlist/constants/colors.dart';
+import 'package:dreamlist/constants/db.dart';
 import 'package:dreamlist/models/todo.dart';
 import 'package:dreamlist/providers/todo_provider.dart';
+import 'package:dreamlist/screens/home/add_todo.dart';
 import 'package:dreamlist/screens/home/home.dart';
 import 'package:dreamlist/widgets/v_space.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +60,27 @@ class _TodoListTileState extends State<TodoListTile> {
             ],
             ListTile(
               onTap: () {
-                Navigator.of(context).pop();
+                popUntilHome();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => AddTodoScreen(
+                      editModeTodo: widget.todo,
+                      onEditSave: (newTodo) {
+                        Provider.of<TodoProvider>(context, listen: false)
+                            .updateTodo(newTodo);
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor:
+                                Theme.of(context).appBarTheme.backgroundColor,
+                            behavior: SnackBarBehavior.floating,
+                            content: Text("Task Updated"),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
               },
               leading: const Icon(
                 Ionicons.pencil,
@@ -79,7 +101,8 @@ class _TodoListTileState extends State<TodoListTile> {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                    backgroundColor:
+                        Theme.of(context).appBarTheme.backgroundColor,
                     behavior: SnackBarBehavior.floating,
                     content: Text("Task Removed"),
                   ),

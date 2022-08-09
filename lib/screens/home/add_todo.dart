@@ -11,7 +11,9 @@ import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
 class AddTodoScreen extends StatefulWidget {
-  const AddTodoScreen({Key? key}) : super(key: key);
+  final Todo? editModeTodo;
+  final Function()? onEditSave;
+  const AddTodoScreen({Key? key, this.editModeTodo, this.onEditSave}) : super(key: key);
 
   @override
   State<AddTodoScreen> createState() => _AddTodoScreenState();

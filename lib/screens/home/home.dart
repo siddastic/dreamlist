@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:dreamlist/constants/colors.dart';
 import 'package:dreamlist/providers/todo_provider.dart';
 import 'package:dreamlist/screens/home/add_todo.dart';
+import 'package:dreamlist/widgets/home_page_header.dart';
 import 'package:dreamlist/widgets/todo_list_tile.dart';
 import 'package:dreamlist/widgets/v_space.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          Container(
-            height: 270,
-            child: Image.network(
-              "https://static.vecteezy.com/system/resources/thumbnails/005/101/992/small_2x/mountain-beautiful-landscape-background-abstract-illustration-free-vector.jpg",
-              fit: BoxFit.cover,
-            ),
-          ),
+          const HomePageHeader(),
           const VSpace(),
           const ListTile(
             title: Text(
@@ -51,11 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
           for (var todo
               in todoProvider.todos.where((element) => !element.isDone))
             TodoListTile(todo: todo),
-          const VSpace(),
           ListTile(
             title: Row(
               children: [
-                Text(
+                const Text(
                   "Completed",
                   style: TextStyle(
                     fontSize: 16,
@@ -63,22 +57,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: ConstantColors.grey,
                   ),
                 ),
-                SizedBox(width: 5),
-                Container(
-                  height: 25,
-                  width: 25,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: ConstantColors.grey,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    "${todoProvider.todos.where((element) => element.isDone).length}",
-                    style: TextStyle(
-                      color: Colors.white,
+                if (todoProvider.todos
+                        .where((element) => element.isDone).isNotEmpty) ...[
+                  const SizedBox(width: 5),
+                  Container(
+                    height: 25,
+                    width: 25,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      color: ConstantColors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      "${todoProvider.todos.where((element) => element.isDone).length}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
+                ],
               ],
             ),
           ),

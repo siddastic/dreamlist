@@ -3,8 +3,8 @@ class Todo{
   final String title;
   final String place;
   final DateTime endDate;
-  final String? notification;
-  final bool isDone;
+  final String? description;
+  bool isDone;
   final DateTime createdAt;
 
   Todo({
@@ -13,7 +13,7 @@ class Todo{
     required this.place,
     required this.endDate,
     required this.createdAt,
-    this.notification,
+    this.description,
     this.isDone = false,
   });
 
@@ -24,7 +24,7 @@ class Todo{
       place: json['place'] as String,
       endDate: DateTime.fromMillisecondsSinceEpoch(json['endDate'] as int),
       createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
-      notification: json['notification'] as String?,
+      description: json['description'] as String?,
       isDone: json['isDone'] as bool,
     );
   }
@@ -34,7 +34,7 @@ class Todo{
     'place': place,
     'endDate': endDate.millisecondsSinceEpoch,
     'createdAt': createdAt.millisecondsSinceEpoch,
-    'notification': notification,
+    'description': description,
     'isDone': isDone,
   };
 }

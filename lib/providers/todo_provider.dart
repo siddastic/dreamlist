@@ -23,6 +23,15 @@ class TodoProvider with ChangeNotifier {
     });
   }
 
+  void changeTodoStatus(Todo todo) {
+    var index = _todos.indexWhere((element) => element.id == todo.id);
+    _todos[index].isDone = !_todos[index].isDone;
+    DBRefs.todosCollection.doc(todo.id).update({
+      'isDone': todo.isDone,
+    });
+    notifyListeners();
+  }
+
   void addTodo(Todo todo) {
     _todos.add(todo);
     DBRefs.todosCollection.doc(todo.id).set(todo.toJson());

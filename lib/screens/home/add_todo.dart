@@ -48,7 +48,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
       place: _placeController.text,
       createdAt: DateTime.now(),
       endDate: selectedEndTime!,
-      notification: _notificationController.text,
+      description: _notificationController.text,
     );
   }
 
@@ -136,7 +136,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     ignoring: true,
                     child: Input(
                       readonly: true,
-                      placeholder: "Time",
+                      placeholder: "End date",
                       controller: _timeController,
                       validator: MasterValidator.attach(
                         msgPrefix: "Time",
@@ -149,7 +149,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                 ),
                 const VSpace(),
                 Input(
-                  placeholder: "Notification",
+                  placeholder: "Description (optional)",
                   controller: _notificationController,
                 ),
               ],
